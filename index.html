@@ -1,0 +1,82 @@
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>IBAN Kartı</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 24px;
+      font-family: Arial, sans-serif;
+      background: #f1f4f8;
+      color: #172033;
+    }
+    .card {
+      max-width: 380px;
+      margin: 60px auto;
+      padding: 26px;
+      background: white;
+      border-radius: 18px;
+      box-shadow: 0 8px 28px #0001;
+    }
+    h2 { margin-top: 0; }
+    .value {
+      padding: 13px;
+      background: #f3f5f8;
+      border-radius: 9px;
+      overflow-wrap: anywhere;
+    }
+    button {
+      width: 100%;
+      padding: 14px;
+      margin-top: 18px;
+      border: 0;
+      border-radius: 10px;
+      background: #1769e0;
+      color: white;
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+  <main class="card">
+    <h2>IBAN Bilgileri</h2>
+    <p>Ad Soyad</p>
+    <div class="value" id="name">Örnek Müşteri</div>
+    <p>IBAN</p>
+    <div class="value" id="iban">TR000000000000000000000000</div>
+    <button id="copy">IBAN'ı Kopyala</button>
+  </main>
+
+  <script>
+    const customers = {
+      "1001": {
+        name: "Örnek Müşteri",
+        iban: "TR000000000000000000000000"
+      }
+    };
+
+    const id = new URLSearchParams(location.search).get("id");
+    const customer = customers[id];
+
+    if (customer) {
+      document.getElementById("name").textContent = customer.name;
+      document.getElementById("iban").textContent = customer.iban;
+    } else {
+      document.querySelector("main").innerHTML =
+        "<h2>IBAN Bilgileri</h2><p>Bu bağlantıya ait kayıt bulunamadı.</p>";
+    }
+
+    document.getElementById("copy")?.addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText(customer.iban);
+        alert("IBAN kopyalandı.");
+      } catch {
+        alert("Kopyalama başarısız. IBAN'ı seçip kopyalayabilirsin.");
+      }
+    });
+  </script>
+</body>
+</html>
